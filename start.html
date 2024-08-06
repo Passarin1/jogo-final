@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login do Jogo</title>
+    <title>Cadastro do Jogador</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 50px;
         }
-        input[type="text"] {
+        input[type="text"], input[type="email"], input[type="password"] {
             padding: 10px;
             font-size: 16px;
             margin-top: 10px;
@@ -22,22 +22,47 @@
             margin-top: 10px;
             cursor: pointer;
         }
+        .container {
+            display: inline-block;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
-    <h1>Bem-vindo ao Jogo!</h1>
-    <h2>Digite o nome do seu personagem</h2>
-    <input type="text" id="playerNameInput" placeholder="Nome do Personagem" />
-    <button onclick="login()">Iniciar Jogo</button>
+    <h1>Cadastro de Jogador</h1>
+    <div class="container">
+        <label for="playerName">Nome:</label><br>
+        <input type="text" id="playerName" placeholder="Nome do Jogador" /><br>
+        <label for="playerEmail">Email:</label><br>
+        <input type="email" id="playerEmail" placeholder="Email" /><br>
+        <label for="playerPassword">Senha:</label><br>
+        <input type="password" id="playerPassword" placeholder="Senha" /><br>
+        <button onclick="register()">Cadastrar</button>
+    </div>
     
     <script>
-        function login() {
-            const playerName = document.getElementById('playerNameInput').value.trim();
-            if (playerName) {
-                localStorage.setItem('playerName', playerName);
-                window.location.href = 'game.html'; // Certifique-se de que esta página exista
+        function register() {
+            const playerName = document.getElementById('playerName').value.trim();
+            const playerEmail = document.getElementById('playerEmail').value.trim();
+            const playerPassword = document.getElementById('playerPassword').value.trim();
+            
+            if (playerName && playerEmail && playerPassword) {
+                // Aqui você pode adicionar validações adicionais se necessário
+
+                // Armazenando os dados no localStorage
+                const playerData = {
+                    name: playerName,
+                    email: playerEmail,
+                    password: playerPassword
+                };
+                localStorage.setItem('playerData', JSON.stringify(playerData));
+
+                alert('Cadastro realizado com sucesso!');
+
+                // Redireciona para a página de login ou jogo
+                window.location.href = 'login.html';
             } else {
-                alert('Digite um nome válido para o personagem.');
+                alert('Por favor, preencha todos os campos.');
             }
         }
     </script>

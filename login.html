@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login do Jogo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input[type="text"], input[type="password"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login do Jogo</h1>
+    <h2>Digite seu email e senha</h2>
+    <input type="text" id="playerEmailInput" placeholder="Email" /><br>
+    <input type="password" id="playerPasswordInput" placeholder="Senha" /><br>
+    <button onclick="login()">Iniciar Jogo</button>
+    
+    <script>
+        function login() {
+            const playerEmail = document.getElementById('playerEmailInput').value.trim();
+            const playerPassword = document.getElementById('playerPasswordInput').value.trim();
+            
+            if (playerEmail && playerPassword) {
+                const storedData = JSON.parse(localStorage.getItem('playerData'));
+                
+                if (storedData && storedData.email === playerEmail && storedData.password === playerPassword) {
+                    localStorage.setItem('playerName', storedData.name);
+                    window.location.href = 'game.html'; // Redireciona para a página do jogo
+                } else {
+                    alert('Email ou senha incorretos.');
+                }
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        }
+    </script>
+</body>
+</html>
