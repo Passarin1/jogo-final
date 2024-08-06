@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Nomes</title>
+    <title>Gerenciar Nomes do Jogo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,7 +33,6 @@
             text-align: left;
             margin-top: 20px;
         }
-        /* Estilo para o modal de carregamento */
         #loadingOverlay {
             display: none;
             position: fixed;
@@ -51,29 +50,45 @@
 </head>
 <body>
     <div id="gameContainer">
-        <h1>Gerenciar Nomes</h1>
-        <div>
+        <h1>Gerenciar Nomes do Jogo</h1>
+        <div id="playerSection">
+            <h2>Nome do Jogador</h2>
+            <input type="text" id="playerNameInput" placeholder="Nome do Jogador" />
+            <button onclick="iniciarJogo()">Iniciar Jogo</button>
+        </div>
+        <div id="gameSection" style="display: none;">
             <h2>Adicionar Nome</h2>
             <input type="text" id="nomeInput" placeholder="Nome" />
             <button onclick="adicionarNome()">Adicionar Nome</button>
+            <div id="nomesList">
+                <h2>Nomes</h2>
+                <ul id="nomes"></ul>
+            </div>
+            <button onclick="salvarJogo()">Salvar Jogo</button>
+            <button onclick="carregarJogo()">Carregar Jogo</button>
         </div>
-        <div id="nomesList">
-            <h2>Nomes</h2>
-            <ul id="nomes"></ul>
-        </div>
-        <button onclick="salvarNomes()">Salvar Nomes</button>
-        <button onclick="carregarNomes()">Carregar Nomes</button>
     </div>
 
-    <!-- Tela de carregamento -->
     <div id="loadingOverlay">Carregando...</div>
 
     <script>
+        function iniciarJogo() {
+            const playerName = document.getElementById('playerNameInput').value.trim();
+            if (playerName) {
+                localStorage.setItem('playerName', playerName);
+                document.getElementById('playerSection').style.display = 'none';
+                document.getElementById('gameSection').style.display = 'block';
+                carregarJogo(); // Carregar o estado salvo do jogo, se houver
+            } else {
+                alert('Digite um nome válido para o jogador.');
+            }
+        }
+
         function adicionarNome() {
             const input = document.getElementById('nomeInput');
             const nome = input.value.trim();
             if (nome) {
-                mostrarCarregamento(); // Mostrar tela de carregamento
+                mostrarCarregamento();
                 const ul = document.getElementById('nomes');
                 const li = document.createElement('li');
                 li.textContent = nome;
@@ -82,15 +97,15 @@
 
                 // Simula um atraso para a tela de carregamento
                 setTimeout(() => {
-                    esconderCarregamento(); // Ocultar tela de carregamento após o atraso
+                    esconderCarregamento();
                 }, 1000);
             } else {
                 alert('Digite um nome válido.');
             }
         }
 
-        function salvarNomes() {
-            mostrarCarregamento(); // Mostrar tela de carregamento
+        function salvarJogo() {
+            mostrarCarregamento();
             const nomes = [];
             const items = document.querySelectorAll('#nomes li');
             items.forEach(item => nomes.push(item.textContent));
@@ -98,13 +113,13 @@
 
             // Simula um atraso para a tela de carregamento
             setTimeout(() => {
-                esconderCarregamento(); // Ocultar tela de carregamento após o atraso
-                alert('Nomes salvos com sucesso!');
+                esconderCarregamento();
+                alert('Jogo salvo com sucesso!');
             }, 1000);
         }
 
-        function carregarNomes() {
-            mostrarCarregamento(); // Mostrar tela de carregamento
+        function carregarJogo() {
+            mostrarCarregamento();
             const nomes = JSON.parse(localStorage.getItem('nomes')) || [];
             const ul = document.getElementById('nomes');
             ul.innerHTML = ''; // Limpa a lista atual
@@ -116,8 +131,9 @@
 
             // Simula um atraso para a tela de carregamento
             setTimeout(() => {
-                esconderCarregamento(); // Ocultar tela de carregamento após o atraso
-                alert('Nomes carregados com sucesso!');
+                esconderCarregamento();
+                const playerName = localStorage.getItem('playerName') || 'Desconhecido';
+                alert(`Bem-vindo de volta, ${playerName}!`);
             }, 1000);
         }
 
@@ -129,7 +145,17 @@
             document.getElementById('loadingOverlay').style.display = 'none';
         }
 
-        window.onload = carregarNomes;
+        window.onload = () => {
+            const playerName = localStorage.getItem('playerName');
+            if (playerName) {
+                document.getElementById('playerSection').style.display = 'none';
+                document.getElementById('gameSection').style.display = 'block';
+                carregarJogo(); // Carregar o estado salvo do jogo, se houver
+            } else {
+                document.getElementById('playerSection').style.display = 'block';
+                document.getElementById('gameSection').style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
