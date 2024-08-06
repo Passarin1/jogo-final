@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carregar Jogo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        #game-container {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+        #load-game-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carregar Jogo</h1>
+    <button id="load-game-button" onclick="loadGame()">Carregar Jogo</button>
+    <iframe id="game-container" src=""></iframe>
+
+    <script>
+        function loadGame() {
+            var gameUrl = 'https://jogo-final-c19f4jys5-luis-henrique-rodrigues-silvas-projects.vercel.app';  // Substitua com a URL do seu jogo
+            document.getElementById('game-container').src = gameUrl;
+        }
+    </script>
+</body>
+</html>
