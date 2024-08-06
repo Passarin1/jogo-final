@@ -46,6 +46,27 @@
             font-size: 20px;
             line-height: 100vh;
         }
+        /* Estilo para o modal de introdução */
+        #introModal {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 20%;
+            width: 60%;
+            background: #fff;
+            color: #000;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        #introModal button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -69,7 +90,15 @@
         </div>
     </div>
 
+    <!-- Tela de carregamento -->
     <div id="loadingOverlay">Carregando...</div>
+
+    <!-- Modal de introdução -->
+    <div id="introModal">
+        <h2>Bem-vindo ao Jogo!</h2>
+        <p id="introMessage"></p>
+        <button onclick="fecharIntro()">Começar o Jogo</button>
+    </div>
 
     <script>
         function iniciarJogo() {
@@ -78,10 +107,22 @@
                 localStorage.setItem('playerName', playerName);
                 document.getElementById('playerSection').style.display = 'none';
                 document.getElementById('gameSection').style.display = 'block';
+                mostrarIntroducao(); // Mostrar a introdução com o nome do jogador
                 carregarJogo(); // Carregar o estado salvo do jogo, se houver
             } else {
                 alert('Digite um nome válido para o jogador.');
             }
+        }
+
+        function mostrarIntroducao() {
+            const playerName = localStorage.getItem('playerName');
+            const introMessage = `Olá, ${playerName}! Você está prestes a começar uma jornada emocionante. Sua missão é explorar o mundo, encontrar tesouros e enfrentar desafios. Prepare-se para uma aventura incrível!`;
+            document.getElementById('introMessage').textContent = introMessage;
+            document.getElementById('introModal').style.display = 'block';
+        }
+
+        function fecharIntro() {
+            document.getElementById('introModal').style.display = 'none';
         }
 
         function adicionarNome() {
@@ -157,5 +198,6 @@
             }
         }
     </script>
+
 </body>
 </html>
