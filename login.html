@@ -41,7 +41,7 @@
                 
                 if (storedData && storedData.email === playerEmail && storedData.password === playerPassword) {
                     localStorage.setItem('playerName', storedData.name);
-                    window.location.href = 'game.html'; // Redireciona para a página do jogo
+                    window.location.href = '/jogo.html/game.html'; // Redireciona para a página do jogo
                 } else {
                     alert('Email ou senha incorretos.');
                 }
