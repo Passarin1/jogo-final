@@ -29,13 +29,13 @@
     <h2>Digite o nome do seu personagem</h2>
     <input type="text" id="playerNameInput" placeholder="Nome do Personagem" />
     <button onclick="login()">Iniciar Jogo</button>
-
+    
     <script>
         function login() {
             const playerName = document.getElementById('playerNameInput').value.trim();
             if (playerName) {
                 localStorage.setItem('playerName', playerName);
-                window.location.href = 'game.html'; // Redireciona para a página do jogo
+                window.location.href = 'game.html'; // Certifique-se de que esta página exista
             } else {
                 alert('Digite um nome válido para o personagem.');
             }
