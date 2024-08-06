@@ -1,0 +1,97 @@
+<h3> Criar Pericias </h3>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Nomes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #gameContainer {
+            display: inline-block;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #nomesList {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <h1>Gerenciar Nomes</h1>
+        <div>
+            <h2>Adicionar Nome</h2>
+            <input type="text" id="nomeInput" placeholder="Nome" />
+            <button onclick="adicionarNome()">Adicionar Nome</button>
+        </div>
+        <div id="nomesList">
+            <h2>Nomes</h2>
+            <ul id="nomes"></ul>
+        </div>
+        <button onclick="salvarNomes()">Salvar Nomes</button>
+        <button onclick="carregarNomes()">Carregar Nomes</button>
+    </div>
+
+    <script>
+        // Função para adicionar nome à lista
+        function adicionarNome() {
+            const input = document.getElementById('nomeInput');
+            const nome = input.value.trim();
+            if (nome) {
+                const ul = document.getElementById('nomes');
+                const li = document.createElement('li');
+                li.textContent = nome;
+                ul.appendChild(li);
+                input.value = '';
+            } else {
+                alert('Digite um nome válido.');
+            }
+        }
+
+        // Função para salvar nomes no Local Storage
+        function salvarNomes() {
+            const nomes = [];
+            const items = document.querySelectorAll('#nomes li');
+            items.forEach(item => nomes.push(item.textContent));
+            localStorage.setItem('nomes', JSON.stringify(nomes));
+            alert('Nomes salvos com sucesso!');
+        }
+
+        // Função para carregar nomes do Local Storage
+        function carregarNomes() {
+            const nomes = JSON.parse(localStorage.getItem('nomes')) || [];
+            const ul = document.getElementById('nomes');
+            ul.innerHTML = ''; // Limpa a lista atual
+            nomes.forEach(nome => {
+                const li = document.createElement('li');
+                li.textContent = nome;
+                ul.appendChild(li);
+            });
+            alert('Nomes carregados com sucesso!');
+        }
+
+        // Carrega os nomes ao iniciar a página
+        window.onload = carregarNomes;
+    </script>
+</body>
+</html>
