@@ -14,8 +14,18 @@
             display: block;
             margin: 5px 0;
         }
+        .dice-buttons {
+            margin-top: 20px;
+        }
+        .dice-buttons button {
+            display: block;
+            margin: 5px 0;
+        }
     </style>
     <script>
+        let gamePhase = 0; // Controla a fase do jogo
+        let diceAllowed = false; // Controle para rolar dados
+
         function rollDice(sides) {
             return Math.floor(Math.random() * sides) + 1;
         }
@@ -36,7 +46,7 @@
         }
 
         function startAdventure(choice) {
-            switch(choice) {
+            switch (choice) {
                 case 'approach':
                     alert("Você se aproxima da pessoa na sala. Ela se apresenta como um mago sábio e oferece ajuda.");
                     break;
@@ -49,6 +59,24 @@
                 default:
                     alert("Escolha inválida.");
             }
+            // Permite rolar dados após a escolha
+            diceAllowed = true;
+            updateDiceButtons();
+        }
+
+        function rollDiceWithAlert(sides) {
+            if (diceAllowed) {
+                alert(`d${sides}: ` + rollDice(sides));
+            } else {
+                alert("Você não pode rolar dados agora. Siga o andamento do jogo.");
+            }
+        }
+
+        function updateDiceButtons() {
+            const buttons = document.querySelectorAll('.dice-buttons button');
+            buttons.forEach(button => {
+                button.disabled = !diceAllowed;
+            });
         }
 
         document.addEventListener('DOMContentLoaded', displayCharacterData);
@@ -82,12 +110,14 @@
     <p>Dano Base: <span id="danoBase"></span></p>
 
     <h3>Rolagem de Dados</h3>
-    <button onclick="alert('d100: ' + rollDice(100))">Rolar d100</button>
-    <button onclick="alert('d20: ' + rollDice(20))">Rolar d20</button>
-    <button onclick="alert('d10: ' + rollDice(10))">Rolar d10</button>
-    <button onclick="alert('d4: ' + rollDice(4))">Rolar d4</button>
-    <button onclick="alert('d30: ' + rollDice(30))">Rolar d30</button>
-    <button onclick="alert('d40: ' + rollDice(40))">Rolar d40</button>
-    <button onclick="alert('d50: ' + rollDice(50))">Rolar d50</button>
+    <div class="dice-buttons">
+        <button onclick="rollDiceWithAlert(100)">Rolar d100</button>
+        <button onclick="rollDiceWithAlert(20)">Rolar d20</button>
+        <button onclick="rollDiceWithAlert(10)">Rolar d10</button>
+        <button onclick="rollDiceWithAlert(4)">Rolar d4</button>
+        <button onclick="rollDiceWithAlert(30)">Rolar d30</button>
+        <button onclick="rollDiceWithAlert(40)">Rolar d40</button>
+        <button onclick="rollDiceWithAlert(50)">Rolar d50</button>
+    </div>
 </body>
 </html>
