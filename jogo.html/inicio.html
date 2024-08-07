@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Início do Jogo</title>
+    <style>
+        .info {
+            margin-top: 20px;
+        }
+        .choices {
+            margin-top: 20px;
+        }
+        .choices button {
+            display: block;
+            margin: 5px 0;
+        }
+    </style>
+    <script>
+        function rollDice(sides) {
+            return Math.floor(Math.random() * sides) + 1;
+        }
+
+        function displayCharacterData() {
+            const data = JSON.parse(localStorage.getItem('characterData'));
+
+            if (data) {
+                document.getElementById('heroName').textContent = data.heroName || 'Desconhecido';
+                document.getElementById('forca').textContent = data.forca || 0;
+                document.getElementById('destreza').textContent = data.destreza || 0;
+                document.getElementById('vigor').textContent = data.vigor || 0;
+                document.getElementById('psicologia').textContent = data.psicologia || 0;
+                document.getElementById('vida').textContent = data.vida || 0;
+                document.getElementById('sanidade').textContent = data.sanidade || 0;
+                document.getElementById('danoBase').textContent = data.danoBase || 0;
+            }
+        }
+
+        function startAdventure(choice) {
+            switch(choice) {
+                case 'approach':
+                    alert("Você se aproxima da pessoa na sala. Ela se apresenta como um mago sábio e oferece ajuda.");
+                    break;
+                case 'explore':
+                    alert("Você decide explorar a sala e encontra um baú escondido com itens úteis.");
+                    break;
+                case 'wait':
+                    alert("Você decide esperar. Após algum tempo, a pessoa na sala começa a se aproximar e pergunta se você precisa de ajuda.");
+                    break;
+                default:
+                    alert("Escolha inválida.");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', displayCharacterData);
+    </script>
+</head>
+<body>
+    <h1>O Aparecimento do Novo Guerreiro</h1>
+    <p>No coração do continente de Elaria, há um reino chamado Valthoria, famoso por sua beleza natural e por ser um centro de aprendizado mágico. Mas, nos últimos tempos, uma sombra escura começou a se espalhar, ameaçando não apenas Valthoria, mas todo o mundo conhecido. Cabe aos jogadores, um grupo de heróis improváveis, unir forças para salvar o reino e, possivelmente, toda Elaria.</p>
+    
+    <p>O Mundo</p>
+    <p>Elaria é um continente vasto e diversificado, com paisagens que variam de florestas densas a desertos áridos, montanhas nevadas e campos verdejantes. Valthoria, no centro, é conhecido por suas torres de marfim e seus rios cristalinos. Os habitantes de Valthoria são adeptos da magia, e a Torre Arcana é a mais prestigiada academia de magia do continente.</p>
+
+    <p>O Objetivo do Jogador</p>
+    <p>No coração de Valthoria, a Sombra Negra, uma força maligna de origem desconhecida, começou a corromper a terra e os seres vivos. Essa sombra é controlada pelo Lich Morath, um poderoso necromante que almeja dominar Elaria e mergulhá-la na escuridão eterna. O objetivo final dos jogadores é encontrar e destruir o Lich Morath, restaurando a paz em Valthoria e, por consequência, em todo o continente.</p>
+
+    <p>Você, bravo herói <span id="heroName"></span>, de repente aparece em uma sala muito grande, e há uma pessoa observando enquanto você está parado. O que você faz?</p>
+
+    <div class="choices">
+        <button onclick="startAdventure('approach')">Aproximar-se da pessoa</button>
+        <button onclick="startAdventure('explore')">Explorar a sala</button>
+        <button onclick="startAdventure('wait')">Esperar</button>
+    </div>
+
+    <h3>Dados do Personagem</h3>
+    <p>Força: <span id="forca"></span></p>
+    <p>Destreza: <span id="destreza"></span></p>
+    <p>Vigor: <span id="vigor"></span></p>
+    <p>Psicologia: <span id="psicologia"></span></p>
+    <p>Vida: <span id="vida"></span></p>
+    <p>Sanidade: <span id="sanidade"></span></p>
+    <p>Dano Base: <span id="danoBase"></span></p>
+
+    <h3>Rolagem de Dados</h3>
+    <button onclick="alert('d100: ' + rollDice(100))">Rolar d100</button>
+    <button onclick="alert('d20: ' + rollDice(20))">Rolar d20</button>
+    <button onclick="alert('d10: ' + rollDice(10))">Rolar d10</button>
+    <button onclick="alert('d4: ' + rollDice(4))">Rolar d4</button>
+    <button onclick="alert('d30: ' + rollDice(30))">Rolar d30</button>
+    <button onclick="alert('d40: ' + rollDice(40))">Rolar d40</button>
+    <button onclick="alert('d50: ' + rollDice(50))">Rolar d50</button>
+</body>
+</html>
