@@ -4,20 +4,44 @@
     <meta charset="UTF-8">
     <title>Início do Jogo</title>
     <style>
-        .info {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+        }
+        .container {
+            flex: 1;
+            padding: 20px;
+        }
+        .info, .choices, .dice-buttons {
             margin-top: 20px;
         }
-        .choices {
-            margin-top: 20px;
-        }
-        .choices button {
+        .choices button, .dice-buttons button {
             display: block;
             margin: 5px 0;
         }
-        .dice-buttons {
+        .data-table {
+            border-collapse: collapse;
+            width: 300px;
+            margin-left: 20px;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .data-table th {
+            background-color: #f2f2f2;
+        }
+        .text-container {
+            flex: 1;
+        }
+        .menu {
             margin-top: 20px;
         }
-        .dice-buttons button {
+        .menu button {
             display: block;
             margin: 5px 0;
         }
@@ -46,19 +70,25 @@
         }
 
         function startAdventure(choice) {
+            const heroName = document.getElementById('heroName').textContent || 'herói';
+            let message = '';
+
             switch (choice) {
                 case 'approach':
-                    alert("Você se aproxima da pessoa na sala. Ela se apresenta como um mago sábio e oferece ajuda.");
+                    message = `Você, ${heroName}, se aproxima da pessoa na sala. Ela se apresenta como um mago sábio e oferece ajuda.`;
                     break;
                 case 'explore':
-                    alert("Você decide explorar a sala e encontra um baú escondido com itens úteis.");
+                    message = `Você, ${heroName}, decide explorar a sala e encontra um baú escondido com itens úteis.`;
                     break;
                 case 'wait':
-                    alert("Você decide esperar. Após algum tempo, a pessoa na sala começa a se aproximar e pergunta se você precisa de ajuda.");
+                    message = `Você, ${heroName}, decide esperar. Após algum tempo, a pessoa na sala começa a se aproximar e pergunta se você precisa de ajuda.`;
                     break;
                 default:
                     alert("Escolha inválida.");
+                    return;
             }
+
+            alert(message);
             // Permite rolar dados após a escolha
             diceAllowed = true;
             updateDiceButtons();
@@ -79,38 +109,67 @@
             });
         }
 
+        function saveGame() {
+            const characterData = {
+                heroName: document.getElementById('heroName').textContent,
+                forca: document.getElementById('forca').textContent,
+                destreza: document.getElementById('destreza').textContent,
+                vigor: document.getElementById('vigor').textContent,
+                psicologia: document.getElementById('psicologia').textContent,
+                vida: document.getElementById('vida').textContent,
+                sanidade: document.getElementById('sanidade').textContent,
+                danoBase: document.getElementById('danoBase').textContent
+            };
+            localStorage.setItem('characterData', JSON.stringify(characterData));
+            alert("Jogo salvo com sucesso!");
+        }
+
+        function goToPage(page) {
+            window.location.href = page;
+        }
+
         document.addEventListener('DOMContentLoaded', displayCharacterData);
     </script>
 </head>
 <body>
-    <h1>O Aparecimento do Novo Guerreiro</h1>
-    <p>No coração do continente de Elaria, há um reino chamado Valthoria, famoso por sua beleza natural e por ser um centro de aprendizado mágico. Mas, nos últimos tempos, uma sombra escura começou a se espalhar, ameaçando não apenas Valthoria, mas todo o mundo conhecido. Cabe aos jogadores, um grupo de heróis improváveis, unir forças para salvar o reino e, possivelmente, toda Elaria.</p>
-    
-    <p>O Mundo</p>
-    <p>Elaria é um continente vasto e diversificado, com paisagens que variam de florestas densas a desertos áridos, montanhas nevadas e campos verdejantes. Valthoria, no centro, é conhecido por suas torres de marfim e seus rios cristalinos. Os habitantes de Valthoria são adeptos da magia, e a Torre Arcana é a mais prestigiada academia de magia do continente.</p>
+    <div class="container">
+        <h1>O Aparecimento do Novo Guerreiro</h1>
+        <div class="text-container">
+            <p>No coração do continente de Elaria, há um reino chamado Valthoria, famoso por sua beleza e aprendizado mágico. Recentemente, uma sombra escura começou a ameaçar o mundo conhecido. Cabe aos heróis unir forças para salvar Valthoria e Elaria.</p>
+            
+            <p>Elaria é um continente vasto, com florestas, desertos, montanhas e campos. Valthoria, no centro, é conhecido por suas torres de marfim e rios cristalinos. A Torre Arcana é a mais prestigiada academia de magia do continente.</p>
 
-    <p>O Objetivo do Jogador</p>
-    <p>No coração de Valthoria, a Sombra Negra, uma força maligna de origem desconhecida, começou a corromper a terra e os seres vivos. Essa sombra é controlada pelo Lich Morath, um poderoso necromante que almeja dominar Elaria e mergulhá-la na escuridão eterna. O objetivo final dos jogadores é encontrar e destruir o Lich Morath, restaurando a paz em Valthoria e, por consequência, em todo o continente.</p>
+            <p>A Sombra Negra, uma força maligna, começou a corromper a terra e os seres vivos. Controlada pelo Lich Morath, a sombra busca dominar Elaria e mergulhá-la na escuridão eterna. Seu objetivo é encontrar e destruir o Lich Morath para restaurar a paz.</p>
 
-    <p>Você, bravo herói <span id="heroName"></span>, de repente aparece em uma sala muito grande, e há uma pessoa observando enquanto você está parado. O que você faz?</p>
+            <p>Você, bravo herói <span id="heroName"></span>, aparece em uma sala grande, com uma pessoa observando você. O que faz?</p>
 
-    <div class="choices">
-        <button onclick="startAdventure('approach')">Aproximar-se da pessoa</button>
-        <button onclick="startAdventure('explore')">Explorar a sala</button>
-        <button onclick="startAdventure('wait')">Esperar</button>
+            <div class="choices">
+                <button onclick="startAdventure('approach')">Aproximar-se</button>
+                <button onclick="startAdventure('explore')">Explorar</button>
+                <button onclick="startAdventure('wait')">Esperar</button>
+            </div>
+        </div>
+        <div class="data-table">
+            <h3>Dados do Personagem</h3>
+            <table>
+                <tr><th>Força</th><td id="forca"></td></tr>
+                <tr><th>Destreza</th><td id="destreza"></td></tr>
+                <tr><th>Vigor</th><td id="vigor"></td></tr>
+                <tr><th>Psicologia</th><td id="psicologia"></td></tr>
+                <tr><th>Vida</th><td id="vida"></td></tr>
+                <tr><th>Sanidade</th><td id="sanidade"></td></tr>
+                <tr><th>Dano Base</th><td id="danoBase"></td></tr>
+            </table>
+        </div>
     </div>
 
-    <h3>Dados do Personagem</h3>
-    <p>Força: <span id="forca"></span></p>
-    <p>Destreza: <span id="destreza"></span></p>
-    <p>Vigor: <span id="vigor"></span></p>
-    <p>Psicologia: <span id="psicologia"></span></p>
-    <p>Vida: <span id="vida"></span></p>
-    <p>Sanidade: <span id="sanidade"></span></p>
-    <p>Dano Base: <span id="danoBase"></span></p>
+    <div class="menu">
+        <button onclick="saveGame()">Salvar Jogo</button>
+        <button onclick="goToPage('outrapagina.html')">Ir para a próxima página</button>
+    </div>
 
-    <h3>Rolagem de Dados</h3>
     <div class="dice-buttons">
+        <h3>Rolagem de Dados</h3>
         <button onclick="rollDiceWithAlert(100)">Rolar d100</button>
         <button onclick="rollDiceWithAlert(20)">Rolar d20</button>
         <button onclick="rollDiceWithAlert(10)">Rolar d10</button>
@@ -121,3 +180,4 @@
     </div>
 </body>
 </html>
+
