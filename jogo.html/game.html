@@ -2,142 +2,133 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo</title>
+    <title>Tabela de Perícias</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
             text-align: center;
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
         }
-        .container {
-            display: flex;
-        }
-        .skills-form, .skills-table {
-            margin: 20px;
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="skills-form">
-            <h1>Bem-vindo ao Jogo, <span id="playerName"></span>!</h1>
-            <h2>Então vamos criar suas perícias?</h2>
-            <form id="skillsForm">
-                <div>Força: <input type="number" name="Força" min="0" max="80" value="0"></div>
-                <div>Destreza: <input type="number" name="Destreza" min="0" max="80" value="0"></div>
-                <div>Agilidade: <input type="number" name="Agilidade" min="0" max="80" value="0"></div>
-                <div>Luta: <input type="number" name="Luta" min="0" max="80" value="0"></div>
-                <div>Contra-Ataque: <input type="number" name="Contra-Ataque" min="0" max="80" value="0"></div>
-                <div>Vigor: <input type="number" name="Vigor" min="0" max="80" value="0"></div>
-                <div>Inteligência: <input type="number" name="Inteligência" min="0" max="80" value="0"></div>
-                <div>Lábia: <input type="number" name="Lábia" min="0" max="80" value="0"></div>
-                <div>Psicologia: <input type="number" name="Psicologia" min="0" max="80" value="0"></div>
-                <div>Percepção: <input type="number" name="Percepção" min="0" max="80" value="0"></div>
-                <div>Intimidar: <input type="number" name="Intimidar" min="0" max="80" value="0"></div>
-                <div>Carisma: <input type="number" name="Carisma" min="0" max="80" value="0"></div>
-                <div>Poder: <input type="number" name="Poder" min="0" max="80" value="0"></div>
-                <div>Sorte: <input type="number" name="Sorte" min="0" max="80" value="0"></div>
-                <div>Medicina: <input type="number" name="Medicina" min="0" max="80" value="0"></div>
-                <div>Primeiros-Socorros: <input type="number" name="Primeiros-Socorros" min="0" max="80" value="0"></div>
-                <div>Pontaria: <input type="number" name="Pontaria" min="0" max="80" value="0"></div>
-                <div>Correr: <input type="number" name="Correr" min="0" max="80" value="0"></div>
-                <div>Furtividade: <input type="number" name="Furtividade" min="0" max="80" value="0"></div>
-                <div><button type="button" onclick="submitSkills()">Submeter</button></div>
-                <div id="pointsRemaining">Pontos restantes: 760</div>
-            </form>
-            <div>
-                <button type="button" onclick="startStory()">Iniciar História</button>
-            </div>
-        </div>
-        <div class="skills-table">
-            <h2>Suas Perícias</h2>
-            <table id="skillsTable">
-                <!-- As perícias preenchidas serão mostradas aqui -->
-            </table>
-        </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const playerName = localStorage.getItem('playerName');
-            if (playerName) {
-                document.getElementById('playerName').textContent = playerName;
-            } else {
-                alert('Nome do personagem não encontrado. Redirecionando para a página de login.');
-                window.location.href = 'login.html';
-            }
-        });
-
-        const totalPoints = 760;
-        let pointsRemaining = totalPoints;
-
-        function updatePointsRemaining() {
-            const inputs = document.querySelectorAll('#skillsForm input[type="number"]');
-            let sum = 0;
-            inputs.forEach(input => {
-                sum += parseInt(input.value) || 0;
-            });
-            pointsRemaining = totalPoints - sum;
-            document.getElementById('pointsRemaining').textContent = `Pontos restantes: ${pointsRemaining}`;
-        }
-
-        function submitSkills() {
-            if (pointsRemaining < 0) {
-                alert('Você ultrapassou o limite de pontos disponíveis.');
-                return;
-            }
-
-            const inputs = document.querySelectorAll('#skillsForm input[type="number"]');
-            const skillsTable = document.getElementById('skillsTable');
-            skillsTable.innerHTML = '';
-
-            inputs.forEach(input => {
-                const skillName = input.name;
-                const skillValue = parseInt(input.value) || 0;
-                const row = document.createElement('tr');
-                const nameCell = document.createElement('td');
-                const valueCell = document.createElement('td');
-                nameCell.textContent = skillName;
-                valueCell.textContent = skillValue;
-                row.appendChild(nameCell);
-                row.appendChild(valueCell);
-                skillsTable.appendChild(row);
-            });
-        }
-
-        function startStory() {
-            const inputs = document.querySelectorAll('#skillsForm input[type="number"]');
-            let valid = true;
-            inputs.forEach(input => {
-                if (parseInt(input.value) > 80) {
-                    valid = false;
-                }
-            });
-
-            if (!valid) {
-                alert('Nenhuma perícia pode ter mais de 80 pontos.');
-                return;
-            }
-
-            // Armazena as habilidades do jogador no localStorage (opcional)
-            const skills = {};
-            inputs.forEach(input => {
-                skills[input.name] = parseInt(input.value) || 0;
-            });
-            localStorage.setItem('playerSkills', JSON.stringify(skills));
-
-            // Redireciona para o início da história
-            window.location.href = 'story.html';
-        }
-
-        document.querySelectorAll('#skillsForm input[type="number"]').forEach(input => {
-            input.addEventListener('input', updatePointsRemaining);
-        });
-
-        updatePointsRemaining(); // Inicializa os pontos restantes
-    </script>
+    <h2>Tabela de Perícias</h2>
+    <form id="tabelaPericias" action="inicio.html">
+        <table>
+            <thead>
+                <tr>
+                    <th>Perícia</th>
+                    <th>Pontos Alocados</th>
+                    <th>Máximo (80)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Força</td>
+                    <td><input type="number" max="80" name="forca" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Destreza</td>
+                    <td><input type="number" max="80" name="destreza" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Agilidade</td>
+                    <td><input type="number" max="80" name="agilidade" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Luta</td>
+                    <td><input type="number" max="80" name="luta" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Contra-Ataque</td>
+                    <td><input type="number" max="80" name="contraAtaque" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Vigor</td>
+                    <td><input type="number" max="80" name="vigor" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Inteligência</td>
+                    <td><input type="number" max="80" name="inteligencia" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Lábia</td>
+                    <td><input type="number" max="80" name="labia" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Psicologia</td>
+                    <td><input type="number" max="80" name="psicologia" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Percepção</td>
+                    <td><input type="number" max="80" name="percepcao" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Intimidar</td>
+                    <td><input type="number" max="80" name="intimidar" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Carisma</td>
+                    <td><input type="number" max="80" name="carisma" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Poder</td>
+                    <td><input type="number" max="80" name="poder" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Sorte</td>
+                    <td><input type="number" max="80" name="sorte" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Medicina</td>
+                    <td><input type="number" max="80" name="medicina" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Primeiros-Socorros</td>
+                    <td><input type="number" max="80" name="primeirosSocorros" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Pontaria</td>
+                    <td><input type="number" max="80" name="pontaria" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Correr</td>
+                    <td><input type="number" max="80" name="correr" required></td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Furtividade</td>
+                    <td><input type="number" max="80" name="furtividade" required></td>
+                    <td>80</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>Total de pontos disponíveis: 760</p>
+        <button type="submit">Ir para a Próxima Página</button>
+    </form>
 </body>
 </html>
