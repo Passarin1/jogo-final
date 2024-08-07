@@ -109,8 +109,20 @@
         }
 
         function startStory() {
-            // Armazena as habilidades do jogador no localStorage (opcional)
             const inputs = document.querySelectorAll('#skillsForm input[type="number"]');
+            let valid = true;
+            inputs.forEach(input => {
+                if (parseInt(input.value) > 80) {
+                    valid = false;
+                }
+            });
+
+            if (!valid) {
+                alert('Nenhuma perícia pode ter mais de 80 pontos.');
+                return;
+            }
+
+            // Armazena as habilidades do jogador no localStorage (opcional)
             const skills = {};
             inputs.forEach(input => {
                 skills[input.name] = parseInt(input.value) || 0;
