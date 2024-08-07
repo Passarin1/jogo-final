@@ -16,119 +16,233 @@
         th {
             background-color: #f2f2f2;
         }
+        .info {
+            margin-top: 20px;
+        }
+        .wrapper {
+            display: flex;
+        }
+        .column {
+            flex: 1;
+            margin: 0 10px;
+        }
     </style>
+    <script>
+        function updatePoints() {
+            const maxPoints = 760;
+            let totalPoints = 0;
+
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                totalPoints += parseInt(input.value) || 0;
+            });
+
+            const pointsRemaining = maxPoints - totalPoints;
+            document.getElementById('pointsRemaining').textContent = pointsRemaining;
+
+            const vigor = parseInt(document.querySelector('input[name="vigor"]').value) || 0;
+            const psicologia = parseInt(document.querySelector('input[name="psicologia"]').value) || 0;
+
+            const vida = Math.floor(vigor / 2) + rollD20();
+            const sanidade = Math.floor(psicologia / 2) + rollD20();
+            const danoBase = rollD20();
+
+            document.getElementById('vida').textContent = vida;
+            document.getElementById('sanidade').textContent = sanidade;
+            document.getElementById('danoBase').textContent = danoBase;
+        }
+
+        function rollD20() {
+            return Math.floor(Math.random() * 20) + 1;
+        }
+
+        function rollDice(sides) {
+            return Math.floor(Math.random() * sides) + 1;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('input', updatePoints);
+            });
+
+            // Initial update
+            updatePoints();
+        });
+    </script>
 </head>
 <body>
     <h2>Tabela de Perícias</h2>
-    <form id="tabelaPericias" action="inicio.html">
-        <table>
-            <thead>
-                <tr>
-                    <th>Perícia</th>
-                    <th>Pontos Alocados</th>
-                    <th>Máximo (80)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Força</td>
-                    <td><input type="number" max="80" name="forca" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Destreza</td>
-                    <td><input type="number" max="80" name="destreza" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Agilidade</td>
-                    <td><input type="number" max="80" name="agilidade" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Luta</td>
-                    <td><input type="number" max="80" name="luta" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Contra-Ataque</td>
-                    <td><input type="number" max="80" name="contraAtaque" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Vigor</td>
-                    <td><input type="number" max="80" name="vigor" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Inteligência</td>
-                    <td><input type="number" max="80" name="inteligencia" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Lábia</td>
-                    <td><input type="number" max="80" name="labia" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Psicologia</td>
-                    <td><input type="number" max="80" name="psicologia" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Percepção</td>
-                    <td><input type="number" max="80" name="percepcao" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Intimidar</td>
-                    <td><input type="number" max="80" name="intimidar" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Carisma</td>
-                    <td><input type="number" max="80" name="carisma" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Poder</td>
-                    <td><input type="number" max="80" name="poder" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Sorte</td>
-                    <td><input type="number" max="80" name="sorte" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Medicina</td>
-                    <td><input type="number" max="80" name="medicina" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Primeiros-Socorros</td>
-                    <td><input type="number" max="80" name="primeirosSocorros" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Pontaria</td>
-                    <td><input type="number" max="80" name="pontaria" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Correr</td>
-                    <td><input type="number" max="80" name="correr" required></td>
-                    <td>80</td>
-                </tr>
-                <tr>
-                    <td>Furtividade</td>
-                    <td><input type="number" max="80" name="furtividade" required></td>
-                    <td>80</td>
-                </tr>
-            </tbody>
-        </table>
-        <p>Total de pontos disponíveis: 760</p>
-        <button type="submit">Ir para a Próxima Página</button>
-    </form>
+    <div class="wrapper">
+        <div class="column">
+            <form id="tabelaPericias" action="inicio.html">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Perícia</th>
+                            <th>Pontos Alocados</th>
+                            <th>Máximo (80)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Força</td>
+                            <td><input type="number" max="80" name="forca" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Destreza</td>
+                            <td><input type="number" max="80" name="destreza" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Agilidade</td>
+                            <td><input type="number" max="80" name="agilidade" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Luta</td>
+                            <td><input type="number" max="80" name="luta" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Contra-Ataque</td>
+                            <td><input type="number" max="80" name="contraAtaque" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Vigor</td>
+                            <td><input type="number" max="80" name="vigor" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Inteligência</td>
+                            <td><input type="number" max="80" name="inteligencia" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Lábia</td>
+                            <td><input type="number" max="80" name="labia" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Psicologia</td>
+                            <td><input type="number" max="80" name="psicologia" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Percepção</td>
+                            <td><input type="number" max="80" name="percepcao" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Intimidar</td>
+                            <td><input type="number" max="80" name="intimidar" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Carisma</td>
+                            <td><input type="number" max="80" name="carisma" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Poder</td>
+                            <td><input type="number" max="80" name="poder" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Sorte</td>
+                            <td><input type="number" max="80" name="sorte" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Medicina</td>
+                            <td><input type="number" max="80" name="medicina" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Primeiros-Socorros</td>
+                            <td><input type="number" max="80" name="primeirosSocorros" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Pontaria</td>
+                            <td><input type="number" max="80" name="pontaria" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Correr</td>
+                            <td><input type="number" max="80" name="correr" required></td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>Furtividade</td>
+                            <td><input type="number" max="80" name="furtividade" required></td>
+                            <td>80</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Total de pontos disponíveis: <span id="pointsRemaining">760</span></p>
+                <button type="submit">Ir para a Próxima Página</button>
+            </form>
+        </div>
+        <div class="column">
+            <h3>Perícias Alocadas</h3>
+            <p>Vida: <span id="vida"></span></p>
+            <p>Sanidade: <span id="sanidade"></span></p>
+            <p>Dano Base: <span id="danoBase"></span></p>
+            <h3>Rolagem de Dados</h3>
+            <button onclick="alert('d100: ' + rollDice(100))">Rolar d100</button>
+            <button onclick="alert('d20: ' + rollDice(20))">Rolar d20</button>
+            <button onclick="alert('d10: ' + rollDice(10))">Rolar d10</button>
+            <button onclick="alert('d4: ' + rollDice(4))">Rolar d4</button>
+            <button onclick="alert('d30: ' + rollDice(30))">Rolar d30</button>
+            <button onclick="alert('d40: ' + rollDice(40))">Rolar d40</button>
+            <button onclick="alert('d50: ' + rollDice(50))">Rolar d50</button>
+        </div>
+    </div>
+    <script>
+        function updatePoints() {
+            const maxPoints = 760;
+            let totalPoints = 0;
+
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                totalPoints += parseInt(input.value) || 0;
+            });
+
+            const pointsRemaining = maxPoints - totalPoints;
+            document.getElementById('pointsRemaining').textContent = pointsRemaining;
+
+            const vigor = parseInt(document.querySelector('input[name="vigor"]').value) || 0;
+            const psicologia = parseInt(document.querySelector('input[name="psicologia"]').value) || 0;
+
+            const vida = Math.floor(vigor / 2) + rollD20();
+            const sanidade = Math.floor(psicologia / 2) + rollD20();
+            const danoBase = rollD20();
+
+            document.getElementById('vida').textContent = vida;
+            document.getElementById('sanidade').textContent = sanidade;
+            document.getElementById('danoBase').textContent = danoBase;
+        }
+
+        function rollD20() {
+            return Math.floor(Math.random() * 20) + 1;
+        }
+
+        function rollDice(sides) {
+            return Math.floor(Math.random() * sides) + 1;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('input', updatePoints);
+            });
+
+            // Initial update
+            updatePoints();
+        });
+    </script>
 </body>
 </html>
