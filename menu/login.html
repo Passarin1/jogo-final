@@ -30,6 +30,7 @@
     <input type="text" id="playerEmailInput" placeholder="Email" /><br>
     <input type="password" id="playerPasswordInput" placeholder="Senha" /><br>
     <button onclick="login()">Iniciar Jogo</button>
+    <button onclick="loadGame()">Carregar Jogo Salvo</button>
     
     <script>
         function login() {
@@ -41,7 +42,30 @@
                 
                 if (storedData && storedData.email === playerEmail && storedData.password === playerPassword) {
                     localStorage.setItem('playerName', storedData.name);
+                    localStorage.removeItem('gameState'); // Remove o estado anterior, se existir, ao iniciar um novo jogo
                     window.location.href = '/jogo.html/game.html'; // Redireciona para a página do jogo
+                } else {
+                    alert('Email ou senha incorretos.');
+                }
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        }
+
+        function loadGame() {
+            const playerEmail = document.getElementById('playerEmailInput').value.trim();
+            const playerPassword = document.getElementById('playerPasswordInput').value.trim();
+            const storedData = JSON.parse(localStorage.getItem('playerData'));
+            const savedGame = localStorage.getItem('gameState');
+            
+            if (playerEmail && playerPassword) {
+                if (storedData && storedData.email === playerEmail && storedData.password === playerPassword) {
+                    if (savedGame) {
+                        localStorage.setItem('playerName', storedData.name);
+                        window.location.href = '/jogo.html/game.html'; // Redireciona para a página do jogo
+                    } else {
+                        alert('Nenhum jogo salvo encontrado.');
+                    }
                 } else {
                     alert('Email ou senha incorretos.');
                 }

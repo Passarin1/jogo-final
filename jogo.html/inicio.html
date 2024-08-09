@@ -9,37 +9,26 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: row;
-            align-items: flex-start;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             flex: 1;
             padding: 20px;
         }
-        .info, .choices, .dice-buttons {
+        .info, .choices {
             margin-top: 20px;
         }
-        .choices button, .dice-buttons button {
+        .choices button {
             display: block;
             margin: 5px 0;
         }
-        .data-table {
-            border-collapse: collapse;
-            width: 300px;
-            margin-left: 20px;
-        }
-        .data-table th, .data-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        .data-table th {
-            background-color: #f2f2f2;
-        }
         .text-container {
-            flex: 1;
+            margin-bottom: 20px;
         }
-        .menu {
-            margin-top: 20px;
+        .menu, .choices {
+            margin-top: auto;
+            margin-bottom: 20px;
         }
         .menu button {
             display: block;
@@ -47,85 +36,22 @@
         }
     </style>
     <script>
-        let gamePhase = 0; // Controla a fase do jogo
-        let diceAllowed = false; // Controle para rolar dados
-
-        function rollDice(sides) {
-            return Math.floor(Math.random() * sides) + 1;
-        }
-
         function displayCharacterData() {
-            const data = JSON.parse(localStorage.getItem('characterData'));
-
-            if (data) {
-                document.getElementById('heroName').textContent = data.heroName || 'Desconhecido';
-                document.getElementById('forca').textContent = data.forca || 0;
-                document.getElementById('destreza').textContent = data.destreza || 0;
-                document.getElementById('vigor').textContent = data.vigor || 0;
-                document.getElementById('psicologia').textContent = data.psicologia || 0;
-                document.getElementById('vida').textContent = data.vida || 0;
-                document.getElementById('sanidade').textContent = data.sanidade || 0;
-                document.getElementById('danoBase').textContent = data.danoBase || 0;
-            }
+            const data = JSON.parse(localStorage.getItem('characterData')) || {};
+            document.getElementById('heroName').textContent = data.heroName || 'Desconhecido';
         }
 
         function startAdventure(choice) {
-            const heroName = document.getElementById('heroName').textContent || 'herói';
-            let message = '';
-
-            switch (choice) {
-                case 'approach':
-                    message = `Você, ${heroName}, se aproxima da pessoa na sala. Ela se apresenta como um mago sábio e oferece ajuda.`;
-                    break;
-                case 'explore':
-                    message = `Você, ${heroName}, decide explorar a sala e encontra um baú escondido com itens úteis.`;
-                    break;
-                case 'wait':
-                    message = `Você, ${heroName}, decide esperar. Após algum tempo, a pessoa na sala começa a se aproximar e pergunta se você precisa de ajuda.`;
-                    break;
-                default:
-                    alert("Escolha inválida.");
-                    return;
-            }
-
-            alert(message);
-            // Permite rolar dados após a escolha
-            diceAllowed = true;
-            updateDiceButtons();
-        }
-
-        function rollDiceWithAlert(sides) {
-            if (diceAllowed) {
-                alert(`d${sides}: ` + rollDice(sides));
-            } else {
-                alert("Você não pode rolar dados agora. Siga o andamento do jogo.");
-            }
-        }
-
-        function updateDiceButtons() {
-            const buttons = document.querySelectorAll('.dice-buttons button');
-            buttons.forEach(button => {
-                button.disabled = !diceAllowed;
-            });
+            // Independentemente da escolha, redireciona para "fala1.html"
+            window.location.href = 'fala1.html';
         }
 
         function saveGame() {
             const characterData = {
-                heroName: document.getElementById('heroName').textContent,
-                forca: document.getElementById('forca').textContent,
-                destreza: document.getElementById('destreza').textContent,
-                vigor: document.getElementById('vigor').textContent,
-                psicologia: document.getElementById('psicologia').textContent,
-                vida: document.getElementById('vida').textContent,
-                sanidade: document.getElementById('sanidade').textContent,
-                danoBase: document.getElementById('danoBase').textContent
+                heroName: document.getElementById('heroName').textContent
             };
             localStorage.setItem('characterData', JSON.stringify(characterData));
             alert("Jogo salvo com sucesso!");
-        }
-
-        function goToPage(page) {
-            window.location.href = page;
         }
 
         document.addEventListener('DOMContentLoaded', displayCharacterData);
@@ -135,48 +61,24 @@
     <div class="container">
         <h1>O Aparecimento do Novo Guerreiro</h1>
         <div class="text-container">
-            <p>No coração do continente de Elaria, há um reino chamado Valthoria, famoso por sua beleza e aprendizado mágico. Recentemente, uma sombra escura começou a ameaçar o mundo conhecido. Cabe aos heróis unir forças para salvar Valthoria e Elaria.</p>
+            <p>(voz deconhecida) No coração do continente de Elaria, há um reino chamado Valthoria, famoso por sua beleza e aprendizado mágico. Recentemente, uma sombra escura começou a ameaçar o mundo conhecido. Cabe aos heróis unir forças para salvar Valthoria e Elaria.</p>
             
             <p>Elaria é um continente vasto, com florestas, desertos, montanhas e campos. Valthoria, no centro, é conhecido por suas torres de marfim e rios cristalinos. A Torre Arcana é a mais prestigiada academia de magia do continente.</p>
 
             <p>A Sombra Negra, uma força maligna, começou a corromper a terra e os seres vivos. Controlada pelo Lich Morath, a sombra busca dominar Elaria e mergulhá-la na escuridão eterna. Seu objetivo é encontrar e destruir o Lich Morath para restaurar a paz.</p>
 
-            <p>Você, bravo herói <span id="heroName"></span>, aparece em uma sala grande, com uma pessoa observando você. O que faz?</p>
-
-            <div class="choices">
-                <button onclick="startAdventure('approach')">Aproximar-se</button>
-                <button onclick="startAdventure('explore')">Explorar</button>
-                <button onclick="startAdventure('wait')">Esperar</button>
-            </div>
+            <p>(voz deconhecida) -Você, bravo herói <span id="heroName"></span>, aparece em uma sala grande, com uma pessoa observando você. O que você faz?</p>
         </div>
-        <div class="data-table">
-            <h3>Dados do Personagem</h3>
-            <table>
-                <tr><th>Força</th><td id="forca"></td></tr>
-                <tr><th>Destreza</th><td id="destreza"></td></tr>
-                <tr><th>Vigor</th><td id="vigor"></td></tr>
-                <tr><th>Psicologia</th><td id="psicologia"></td></tr>
-                <tr><th>Vida</th><td id="vida"></td></tr>
-                <tr><th>Sanidade</th><td id="sanidade"></td></tr>
-                <tr><th>Dano Base</th><td id="danoBase"></td></tr>
-            </table>
+
+        <div class="choices">
+            <li><a href="/jogo.html/capitulo 1/Parte1.html">Aproximar-se
+                <li><a href="/jogo.html/Parte1.1.html">Explorar
+                    <li><a href="/jogo.html/Parte1.2.html">Esperar</a>
         </div>
-    </div>
 
-    <div class="menu">
-        <button onclick="saveGame()">Salvar Jogo</button>
-        <button onclick="goToPage('outrapagina.html')">Ir para a próxima página</button>
-    </div>
-
-    <div class="dice-buttons">
-        <h3>Rolagem de Dados</h3>
-        <button onclick="rollDiceWithAlert(100)">Rolar d100</button>
-        <button onclick="rollDiceWithAlert(20)">Rolar d20</button>
-        <button onclick="rollDiceWithAlert(10)">Rolar d10</button>
-        <button onclick="rollDiceWithAlert(4)">Rolar d4</button>
-        <button onclick="rollDiceWithAlert(30)">Rolar d30</button>
-        <button onclick="rollDiceWithAlert(40)">Rolar d40</button>
-        <button onclick="rollDiceWithAlert(50)">Rolar d50</button>
+        <div class="menu">
+            <button onclick="saveGame()">Salvar Jogo</button>
+        </div>
     </div>
 </body>
 </html>

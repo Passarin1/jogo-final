@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Parte 1 do Jogo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1;
+            padding: 20px;
+        }
+        .text-container, .input-container, .menu, #nextPart {
+            margin-top: 20px;
+        }
+        .menu button {
+            display: block;
+            margin: 5px 0;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #nextPart {
+            display: none;
+        }
+    </style>
+    <script>
+         // Função para salvar o jogo
+         function salvarJogo() {
+            const userInput = document.getElementById('userInput').value.trim();
+            const currentPage = window.location.pathname;
+
+            // Armazena a página atual e o progresso do jogador
+            localStorage.setItem('jogoSalvo', JSON.stringify({
+                page: currentPage,
+                input: userInput
+            }));
+
+            alert('Jogo salvo com sucesso!');
+        }
+
+        // Função para carregar o jogo
+        function carregarJogo() {
+            const jogoSalvo = localStorage.getItem('jogoSalvo');
+
+            if (jogoSalvo) {
+                const data = JSON.parse(jogoSalvo);
+
+                // Verifica se está na mesma página salva
+                if (data.page !== window.location.pathname) {
+                    // Redireciona para a página salva
+                    window.location.href = data.page;
+                } else {
+                    // Restaura o progresso
+                    document.getElementById('userInput').value = data.input;
+                    document.getElementById('nextPart').style.display = 'block';
+                    document.getElementById('playerAction').innerText = `Você disse: "${data.input}"`;
+                }
+            } else {
+                alert('Nenhum jogo salvo encontrado.');
+            }
+        }
+        function handleSubmit() {
+            const userInput = document.getElementById('userInput').value.trim();
+            
+            if (userInput) {
+                // Armazena o valor digitado ou realiza alguma lógica
+                localStorage.setItem('userResponse', userInput);
+
+                // Exibe o texto do jogador na narrativa
+                document.getElementById('playerAction').innerText = `Você disse: "${userInput}"`;
+
+                // Revela a próxima parte do conteúdo
+                document.getElementById('nextPart').style.display = 'block';
+            } else {
+                alert('Por favor, digite algo antes de continuar.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <body onload="carregarJogo()">
+        <div class="container">
+            <h1>Parte 1 do Jogo</h1>
+            <div class="text-container">
+                <p>(voz desconhecida) A pessoa que você vê parece alguém importante.</p>
+                <img src="/imgs/db82cecb-3407-4f54-82b9-b38cb4f22e6f.webp" alt="rei">
+                <p>(voz desconhecida) Ele começa a falar várias coisas, mas você não entende o que ele diz.</p>
+                <p>O que você faria nessa situação?</p>
+            </div>
+
+        <div class="input-container">
+            <label for="userInput">Digite sua ação:</label>
+            <input type="text" id="userInput" placeholder="Exemplo: Abrir o livro" />
+        </div>
+
+        <div class="menu">
+            <button onclick="handleSubmit()">Continuar</button>
+            <button onclick="salvarJogo()">Salvar Jogo</button>
+            <button onclick="carregarJogo()">Carregar Jogo</button>
+        </div>
+
+        <div id="nextPart">
+            <h2>continuação da sua ação</h2>
+            <p id="playerAction"></p>
+            <p>O rei olha para você com curiosidade, mas não responde diretamente. Em vez disso, ele faz um sinal para um dos seus servos.</p>
+            <p>O servo se aproxima, obedece ao comando do rei e coloca a mão no livro antigo que está diante de você. Quando o servo toca o livro, uma marca estranha começa a brilhar na capa do livro, como se estivesse esperando por aquele toque.</p>
+            <!-- Adicione mais conteúdo ou lógica aqui conforme necessário -->
+             <img src="" alt="imagem do livro">
+            <li><a href="/jogo.html/capitulo 1/parte2.html"> colocar mão </a></li>
+            <li><a href="/jogo.html/capitulo 1/outraCoisa/NaocolocarMao.html"> Nâo colocar mão </a></li>
+            <li><a href="/jogo.html/capitulo 1/outraCoisa/fugir.html"> fugir </a></li>
+        </div>
+    </div>
+</body>
+</html>
