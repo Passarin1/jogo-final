@@ -34,12 +34,21 @@
 
             const inputs = document.querySelectorAll('input[type="number"]');
             inputs.forEach(input => {
-                totalPoints += parseInt(input.value) || 0;
+                let value = parseInt(input.value) || 0;
+
+                // Evitar valores negativos
+                if (value < 0) {
+                    input.value = 0;
+                    value = 0;
+                }
+
+                totalPoints += value;
             });
 
             const pointsRemaining = maxPoints - totalPoints;
             document.getElementById('pointsRemaining').textContent = pointsRemaining;
 
+            // Atualiza Vida e Sanidade
             const vigor = parseInt(document.querySelector('input[name="vigor"]').value) || 0;
             const psicologia = parseInt(document.querySelector('input[name="psicologia"]').value) || 0;
 
@@ -50,6 +59,10 @@
             document.getElementById('vida').textContent = vida;
             document.getElementById('sanidade').textContent = sanidade;
             document.getElementById('danoBase').textContent = danoBase;
+
+            // Valida se todos os pontos foram alocados
+            const submitButton = document.querySelector('button[type="submit"]');
+            submitButton.disabled = pointsRemaining !== 0;
         }
 
         function rollD20() {
@@ -66,7 +79,7 @@
                 input.addEventListener('input', updatePoints);
             });
 
-            // Initial update
+            // Atualização inicial
             updatePoints();
         });
     </script>
@@ -183,7 +196,7 @@
                     </tbody>
                 </table>
                 <p>Total de pontos disponíveis: <span id="pointsRemaining">760</span></p>
-                <button type="submit">Ir para a Próxima Página</button>
+                <button type="submit" disabled>Ir para a Próxima Página</button>
             </form>
         </div>
         <div class="column">
@@ -201,48 +214,5 @@
             <button onclick="alert('d50: ' + rollDice(50))">Rolar d50</button>
         </div>
     </div>
-    <script>
-        function updatePoints() {
-            const maxPoints = 760;
-            let totalPoints = 0;
-
-            const inputs = document.querySelectorAll('input[type="number"]');
-            inputs.forEach(input => {
-                totalPoints += parseInt(input.value) || 0;
-            });
-
-            const pointsRemaining = maxPoints - totalPoints;
-            document.getElementById('pointsRemaining').textContent = pointsRemaining;
-
-            const vigor = parseInt(document.querySelector('input[name="vigor"]').value) || 0;
-            const psicologia = parseInt(document.querySelector('input[name="psicologia"]').value) || 0;
-
-            const vida = Math.floor(vigor / 2) + rollD20();
-            const sanidade = Math.floor(psicologia / 2) + rollD20();
-            const danoBase = rollD20();
-
-            document.getElementById('vida').textContent = vida;
-            document.getElementById('sanidade').textContent = sanidade;
-            document.getElementById('danoBase').textContent = danoBase;
-        }
-
-        function rollD20() {
-            return Math.floor(Math.random() * 20) + 1;
-        }
-
-        function rollDice(sides) {
-            return Math.floor(Math.random() * sides) + 1;
-        }
-
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const inputs = document.querySelectorAll('input[type="number"]');
-            inputs.forEach(input => {
-                input.addEventListener('input', updatePoints);
-            });
-
-            // Initial update
-            updatePoints();
-        });
-    </script>
 </body>
 </html>
